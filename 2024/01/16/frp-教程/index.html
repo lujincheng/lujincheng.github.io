@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="出这个文章的前提是bruce最近买了一个阿里云主机，但是呢云主机的配置比较拉。刚好家里有一台闲置的主机，就想着搞一搞内网穿透。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="frp 教程">
+<meta property="og:url" content="http://example.com/2024/01/16/frp-%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Cook IT">
+<meta property="og:description" content="出这个文章的前提是bruce最近买了一个阿里云主机，但是呢云主机的配置比较拉。刚好家里有一台闲置的主机，就想着搞一搞内网穿透。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-01-16T06:54:29.000Z">
+<meta property="article:modified_time" content="2024-01-16T07:35:41.174Z">
+<meta property="article:author" content="Bruce Lu">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2024/01/16/frp-%E6%95%99%E7%A8%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2024/01/16/frp-%E6%95%99%E7%A8%8B/","path":"2024/01/16/frp-教程/","title":"frp 教程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>frp 教程 | Cook IT</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Cook IT</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Let's talk about technology</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tcp-%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">tcp 模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stcp-%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">stcp 模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#http-%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">http 模式</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bruce Lu"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">Bruce Lu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lujincheng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lujincheng" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lujinchengs@outlook.com" title="E-Mail → mailto:lujinchengs@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/01/16/frp-%E6%95%99%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Bruce Lu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cook IT">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="frp 教程 | Cook IT">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          frp 教程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2024-01-16 14:54:29 / Modified: 15:35:41" itemprop="dateCreated datePublished" datetime="2024-01-16T14:54:29+08:00">2024-01-16</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>出这个文章的前提是bruce最近买了一个阿里云主机，但是呢云主机的配置比较拉。刚好家里有一台闲置的主机，就想着搞一搞内网穿透。<span id="more"></span></p>
+<p>工具用的是 <a target="_blank" rel="noopener" href="https://github.com/fatedier/frp">frp</a></p>
+<h2 id="tcp-模式"><a href="#tcp-模式" class="headerlink" title="tcp 模式"></a>tcp 模式</h2><p>这种方式安全性比较差，端口容易被扫，log里看到好多陌生ip。</p>
+<ol>
+<li>Modify <code>frps.toml</code> on server A by setting the <code>bindPort</code> for frp clients to connect to:</li>
+</ol>
+  <figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># frps.toml</span></span><br><span class="line"><span class="attr">bindPort</span> = <span class="number">7000</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>Start <code>frps</code> on server A:</p>
+<p> <code>./frps -c ./frps.toml</code></p>
+</li>
+<li><p>Modify <code>frpc.toml</code> on server B and set the <code>serverAddr</code> field to the public IP address of your frps server:</p>
+</li>
+</ol>
+  <figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># frpc.toml</span></span><br><span class="line"><span class="attr">serverAddr</span> = <span class="string">&quot;x.x.x.x&quot;</span></span><br><span class="line"><span class="attr">serverPort</span> = <span class="number">7000</span></span><br><span class="line"></span><br><span class="line"><span class="section">[[proxies]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;ssh&quot;</span></span><br><span class="line"><span class="attr">type</span> = <span class="string">&quot;tcp&quot;</span></span><br><span class="line"><span class="attr">localIP</span> = <span class="string">&quot;127.0.0.1&quot;</span></span><br><span class="line"><span class="attr">localPort</span> = <span class="number">22</span></span><br><span class="line"><span class="attr">remotePort</span> = <span class="number">6000</span></span><br></pre></td></tr></table></figure>
+
+<p>Note that the <code>localPort</code> (listened on the client) and <code>remotePort</code> (exposed on the server) are used for traffic going in and out of the frp system, while the <code>serverPort</code> is used for communication between frps and frpc.</p>
+<ol start="4">
+<li><p>Start <code>frpc</code> on server B:</p>
+<p> <code>./frpc -c ./frpc.toml</code></p>
+</li>
+<li><p>To access server B from another machine through server A via SSH (assuming the username is <code>test</code>), use the following command:</p>
+<p> <code>ssh -oPort=6000 test@x.x.x.x</code></p>
+</li>
+</ol>
+<h2 id="stcp-模式"><a href="#stcp-模式" class="headerlink" title="stcp 模式"></a>stcp 模式</h2><p>比上面的要安全些</p>
+<p>To mitigate risks associated with exposing certain services directly to the public network, STCP (Secret TCP) mode requires a preshared key to be used for access to the service from other clients.</p>
+<p>Configure <code>frps</code> same as above.</p>
+<ol>
+<li>Start <code>frpc</code> on machine B with the following config. This example is for exposing the SSH service (port 22), and note the <code>secretKey</code> field for the preshared key, and that the <code>remotePort</code> field is removed here:</li>
+</ol>
+  <figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># frpc.toml</span></span><br><span class="line"><span class="attr">serverAddr</span> = <span class="string">&quot;x.x.x.x&quot;</span></span><br><span class="line"><span class="attr">serverPort</span> = <span class="number">7000</span></span><br><span class="line"></span><br><span class="line"><span class="section">[[proxies]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;secret_ssh&quot;</span></span><br><span class="line"><span class="attr">type</span> = <span class="string">&quot;stcp&quot;</span></span><br><span class="line"><span class="attr">secretKey</span> = <span class="string">&quot;abcdefg&quot;</span></span><br><span class="line"><span class="attr">localIP</span> = <span class="string">&quot;127.0.0.1&quot;</span></span><br><span class="line"><span class="attr">localPort</span> = <span class="number">22</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>Start another <code>frpc</code> (typically on another machine C) with the following config to access the SSH service with a security key (<code>secretKey</code> field):</li>
+</ol>
+  <figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># frpc.toml</span></span><br><span class="line"><span class="attr">serverAddr</span> = <span class="string">&quot;x.x.x.x&quot;</span></span><br><span class="line"><span class="attr">serverPort</span> = <span class="number">7000</span></span><br><span class="line"></span><br><span class="line"><span class="section">[[visitors]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;secret_ssh_visitor&quot;</span></span><br><span class="line"><span class="attr">type</span> = <span class="string">&quot;stcp&quot;</span></span><br><span class="line"><span class="attr">serverName</span> = <span class="string">&quot;secret_ssh&quot;</span></span><br><span class="line"><span class="attr">secretKey</span> = <span class="string">&quot;abcdefg&quot;</span></span><br><span class="line"><span class="attr">bindAddr</span> = <span class="string">&quot;127.0.0.1&quot;</span></span><br><span class="line"><span class="attr">bindPort</span> = <span class="number">6000</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>On machine C, connect to SSH on machine B, using this command:</p>
+<p> <code>ssh -oPort=6000 127.0.0.1</code></p>
+</li>
+</ol>
+<h2 id="http-模式"><a href="#http-模式" class="headerlink" title="http 模式"></a>http 模式</h2><p>可以把内网的http服务通过云服务器暴露出来</p>
+<p>Sometimes we need to expose a local web service behind a NAT network to others for testing purposes with our own domain name.</p>
+<p>Unfortunately, we cannot resolve a domain name to a local IP. However, we can use frp to expose an HTTP(S) service.</p>
+<ol>
+<li>Modify <code>frps.toml</code> and set the HTTP port for vhost to 8080:</li>
+</ol>
+  <figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># frps.toml</span></span><br><span class="line"><span class="attr">bindPort</span> = <span class="number">7000</span></span><br><span class="line"><span class="attr">vhostHTTPPort</span> = <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+
+<p>  If you want to configure an https proxy, you need to set up the <code>vhostHTTPSPort</code>.</p>
+<ol start="2">
+<li><p>Start <code>frps</code>:</p>
+<p> <code>./frps -c ./frps.toml</code></p>
+</li>
+<li><p>Modify <code>frpc.toml</code> and set <code>serverAddr</code> to the IP address of the remote frps server. Specify the <code>localPort</code> of your web service:</p>
+</li>
+</ol>
+  <figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># frpc.toml</span></span><br><span class="line"><span class="attr">serverAddr</span> = <span class="string">&quot;x.x.x.x&quot;</span></span><br><span class="line"><span class="attr">serverPort</span> = <span class="number">7000</span></span><br><span class="line"></span><br><span class="line"><span class="section">[[proxies]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;web&quot;</span></span><br><span class="line"><span class="attr">type</span> = <span class="string">&quot;http&quot;</span></span><br><span class="line"><span class="attr">localPort</span> = <span class="number">80</span></span><br><span class="line"><span class="attr">customDomains</span> = [<span class="string">&quot;www.example.com&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><p>Start <code>frpc</code>:</p>
+<p> <code>./frpc -c ./frpc.toml</code></p>
+</li>
+<li><p>Map the A record of <code>www.example.com</code> to either the public IP of the remote frps server or a CNAME record pointing to your original domain.</p>
+</li>
+<li><p>Visit your local web service using url <code>http://www.example.com:8080</code>.</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/28/Github-SSH-Key/" rel="prev" title="Github SSH Key">
+                  <i class="fa fa-chevron-left"></i> Github SSH Key
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bruce Lu</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
